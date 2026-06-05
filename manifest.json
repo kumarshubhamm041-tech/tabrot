@@ -1,0 +1,37 @@
+{
+  "manifest_version": 3,
+  "name": "Tab Rot",
+  "version": "1.0.0",
+  "description": "visual decay for tabs left open too long because memory leaks arent enough. sepia, grain, cracks, and emotional breakdown included.",
+  "author": "xapqrt",
+  "permissions": [
+    "storage",
+    "tabs",
+    "scripting"
+  ],
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "css": [
+        "rot.css"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  }
+}
