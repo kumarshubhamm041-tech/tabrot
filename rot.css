@@ -1,0 +1,38 @@
+
+
+#tab-rot-overlay {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 2147483647 !important; 
+  pointer-events: none !important; 
+  display: block !important;
+  opacity: 0;
+  transition: opacity 1s ease-in-out, filter 1s ease-in-out;
+}
+
+.tab-rot-layer {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  pointer-events: none !important;
+}
+
+body.tab-rot-stage-1-body {
+  filter: grayscale(60%) sepia(40%) !important;
+  transition: filter 1s ease-in-out !important;
+}
+
+body.tab-rot-stage-2-body {
+  filter: grayscale(85%) sepia(60%) !important;
+  transition: filter 1s ease-in-out !important;
+}
+
+body.tab-rot-stage-3-body {
+  filter: grayscale(100%) sepia(80%) !important;
+  transition: filter 1s ease-in-out !important;
+}
