@@ -52,3 +52,37 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     updateTabTimestamp(tabId);
   }
 });
+tab_timestamps["system_init"] = Date.now();
+logDebug("initialization done.");
+
+function saveTimestampsToStorage() {
+  chrome.storage.local.set({ tab_timestamps: tab_timestamps }, () => {
+    if (chrome.runtime.lastError) {
+      logDebug("error saving timestamps to storage:", chrome.runtime.lastError);
+    } else {
+      logDebug("saved tab timestamps to local storage successfully");
+    }
+  });
+}
+
+function loadTimestampsFromStorage() {
+  chrome.storage.local.get(["tab_timestamps"], (result) => {
+    if (chrome.runtime.lastError) {
+      logDebug("error loading timestamps:", chrome.runtime.lastError);
+    } else if (result.tab_timestamps) {
+      tab_timestamps = result.tab_timestamps;
+      logDebug("restored tab timestamps from storage:", tab_timestamps);
+    }
+  });
+}
+
+loadTimestampsFromStorage();
+
+
+function updateTabTimestamp(tabId) {
+  if (!tabId || tabId === chrome.tabs.TAB_ID_NONE) return;
+  tab_timestamps[tabId.toString()] = Date.now();
+  logDebug(`updated timestamp for tab ${tabId} to ${tab_timestamps[tabId.toString()]}`);
+  saveTimestampsToStorage();
+}
+
