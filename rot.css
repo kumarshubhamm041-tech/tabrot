@@ -36,3 +36,28 @@ body.tab-rot-stage-3-body {
   filter: grayscale(100%) sepia(80%) !important;
   transition: filter 1s ease-in-out !important;
 }
+ filter: grayscale(100%) sepia(80%) !important;
+  transition: filter 1s ease-in-out !important;
+
+#tab-rot-overlay.tab-rot-stage-2,
+#tab-rot-overlay.tab-rot-stage-3 {
+  opacity: 1 !important;
+}
+
+#tab-rot-overlay.tab-rot-stage-2 .tab-rot-grain,
+#tab-rot-overlay.tab-rot-stage-3 .tab-rot-grain {
+  display: block !important;
+  opacity: 0.18 !important; 
+  background: transparent !important;
+}
+
+#tab-rot-overlay.tab-rot-stage-3 .tab-rot-cracks {
+  display: block !important;
+  opacity: 0.35 !important;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.tab-rot-grain,
+.tab-rot-cracks {
+  display: none !important;
+}
