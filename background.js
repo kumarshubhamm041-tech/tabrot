@@ -34,3 +34,21 @@ chrome.runtime.onInstalled.addListener((details) => {
 logDebug("initializing variables...");
 tab_timestamps["system_init"] = Date.now();
 logDebug("initialization done.");
+
+function updateTabTimestamp(tabId) {
+  if (!tabId || tabId === chrome.tabs.TAB_ID_NONE) return;
+  tab_timestamps[tabId.toString()] = Date.now();
+  logDebug(`updated timestamp for tab ${tabId} to ${tab_timestamps[tabId.toString()]}`);
+}
+
+chrome.tabs.onActivated.addListener((activeInfo) => {
+  logDebug("tab activated listener fired", activeInfo);
+  updateTabTimestamp(activeInfo.tabId);
+});
+
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+  if (changeInfo.status === "complete") {
+    logDebug(`tab ${tabId} finished loading, updating timestamp`);
+    updateTabTimestamp(tabId);
+  }
+});
