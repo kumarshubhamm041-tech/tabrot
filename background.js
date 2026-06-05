@@ -86,3 +86,46 @@ function updateTabTimestamp(tabId) {
   saveTimestampsToStorage();
 }
 
+function checkTabDecayLoop() {
+  chrome.storage.local.get(["decay_threshold_minutes", "global_enabled"], (settings) => {
+    const enabled = settings.global_enabled !== false;
+    if (!enabled) return;
+
+    const threshold_min = settings.decay_threshold_minutes || DEFAULT_DECAY_THRESHOLD_MINUTES;
+    const threshold_ms = threshold_min * 60 * 1000;
+
+    chrome.tabs.query({}, (tabs) => {
+      tabs.forEach((tab) => {
+        if (!tab.url || tab.url.startsWith("chrome://") || tab.url.startsWith("edge://")) return;
+
+        const tab_id_str = tab.id.toString();
+        if (!tab_timestamps[tab_id_str]) {
+          tab_timestamps[tab_id_str] = Date.now();
+        }
+
+        if (tab.active) {
+          tab_timestamps[tab_id_str] = Date.now();
+        }
+
+        const delta_ms = Date.now() - tab_timestamps[tab_id_str];
+        let stage = 0;
+
+        if (delta_ms >= threshold_ms) {
+          stage = 3;
+        } else if (delta_ms >= (threshold_ms * 2) / 3) {
+          stage = 2;
+        } else if (delta_ms >= threshold_ms / 3) {
+          stage = 1;
+        }
+
+        chrome.tabs.sendMessage(tab.id, { action: "set_rot_stage", stage: stage }, (response) => {
+          if (chrome.runtime.lastError) {
+          }
+        });
+      });
+      saveTimestampsToStorage();
+    });
+  });
+}
+
+setInterval(checkTabDecayLoop, 5000);
