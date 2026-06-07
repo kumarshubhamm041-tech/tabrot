@@ -127,5 +127,41 @@ function updateVisualsForRotStage() {
     rot_overlay_div.classList.add("tab-rot-stage-3");
   }
 
+
   console.log(`visual state updated: stage ${current_rot_stage}`);
+}
+
+let is_restoring = false;
+
+function requestRestoration() {
+  if (current_rot_stage === 0 || is_restoring) return;
+  is_restoring = true;
+
+  console.log("restoration requested, informing background script...");
+  chrome.runtime.sendMessage({ action: "reset_my_timestamp" }, (response) => {
+    if (chrome.runtime.lastError) {
+      console.log("swallowed runtime error during message reset:", chrome.runtime.lastError);
+    }
+  });
+
+  playRestorationAnimation();
+}
+
+document.addEventListener("click", () => {
+  if (current_rot_stage > 0) {
+    console.log("click detected, running restore...");
+    requestRestoration();
+  }
+});
+
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden && current_rot_stage > 0) {
+    console.log("tab became visible, running restore...");
+    requestRestoration();
+  }
+});
+
+function playRestorationAnimation() {
+  console.log("playing restoration animation...");
+  is_restoring = false;
 }
