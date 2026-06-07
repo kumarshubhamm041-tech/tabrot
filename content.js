@@ -46,8 +46,17 @@ function injectRotOverlay() {
   rot_overlay_div = document.createElement("div");
   rot_overlay_div.id = "tab-rot-overlay";
 
-  const grain_div = document.createElement("div");
+const grain_div = document.createElement("div");
   grain_div.className = "tab-rot-layer tab-rot-grain";
+  grain_div.innerHTML = `
+    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:100%; display:block;">
+      <filter id="tab-rot-noise">
+        <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="3" stitchTiles="stitch"/>
+        <feColorMatrix type="matrix" values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.35 0"/>
+      </filter>
+      <rect width="100%" height="100%" filter="url(#tab-rot-noise)"/>
+    </svg>
+  `;
   rot_overlay_div.appendChild(grain_div);
 
   const cracks_div = document.createElement("div");
