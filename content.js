@@ -59,8 +59,22 @@ const grain_div = document.createElement("div");
   `;
   rot_overlay_div.appendChild(grain_div);
 
-  const cracks_div = document.createElement("div");
+    const cracks_div = document.createElement("div");
   cracks_div.className = "tab-rot-layer tab-rot-cracks";
+  cracks_div.innerHTML = `
+    <svg width="100%" height="100%" viewBox="0 0 1000 1000" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:100%; display:block;">
+      <g stroke="rgba(40,30,20,0.8)" stroke-width="1.5" fill="none">
+        <path d="M500,500 L450,420 L350,390 L300,310 L150,290" />
+        <path d="M500,500 L560,460 L680,430 L800,450 L950,420" />
+        <path d="M500,500 L520,590 L490,700 L530,820 L480,950" />
+        <path d="M450,420 L470,300 L410,200 L460,80" />
+        <path d="M560,460 L620,550 L750,620 L880,720" />
+        <path d="M490,700 L380,750 L270,720 L120,760" />
+        <path d="M300,310 L220,240 L110,260" />
+        <path d="M680,430 L730,320 L860,280" />
+      </g>
+    </svg>
+  `;
   rot_overlay_div.appendChild(cracks_div);
 
   the_actual_body.appendChild(rot_overlay_div);
