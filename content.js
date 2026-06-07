@@ -71,7 +71,38 @@ if (document.readyState === "loading") {
 
 
 
-// placeholder visual update function since we are doing this step by step lmaoo
 function updateVisualsForRotStage() {
   console.log("updating visuals for stage:", current_rot_stage);
+}
+function updateVisualsForRotStage() {
+  console.log("updating visuals for stage:", current_rot_stage);
+  if (!rot_overlay_div) {
+    injectRotOverlay();
+  }
+  if (!rot_overlay_div) return;
+
+  the_actual_body = document.body || document.getElementsByTagName("body")[0];
+  if (!the_actual_body) return;
+
+  the_actual_body.classList.remove(
+    "tab-rot-stage-1-body",
+    "tab-rot-stage-2-body",
+    "tab-rot-stage-3-body"
+  );
+
+  rot_overlay_div.className = "";
+
+  if (current_rot_stage >= 1) {
+    the_actual_body.classList.add(`tab-rot-stage-1-body`);
+  }
+  if (current_rot_stage >= 2) {
+    the_actual_body.classList.add(`tab-rot-stage-2-body`);
+    rot_overlay_div.classList.add("tab-rot-stage-2");
+  }
+  if (current_rot_stage >= 3) {
+    the_actual_body.classList.add(`tab-rot-stage-3-body`);
+    rot_overlay_div.classList.add("tab-rot-stage-3");
+  }
+
+  console.log(`visual state updated: stage ${current_rot_stage}`);
 }
