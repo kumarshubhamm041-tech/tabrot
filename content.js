@@ -161,7 +161,49 @@ document.addEventListener("visibilitychange", () => {
   }
 });
 
+
+
+
 function playRestorationAnimation() {
   console.log("playing restoration animation...");
   is_restoring = false;
+  if (!rot_overlay_div || !the_actual_body) {
+    is_restoring = false;
+    current_rot_stage = 0;
+    return;
+  }
+
+  console.log("running restoration animation flow...");
+
+  let flash = rot_overlay_div.querySelector(".tab-rot-flash-overlay");
+  if (!flash) {
+    flash = document.createElement("div");
+    flash.className = "tab-rot-flash-overlay";
+    rot_overlay_div.appendChild(flash);
+  }
+
+  rot_overlay_div.classList.add("tab-rot-shattering");
+  the_actual_body.classList.add("tab-rot-restoring-body");
+
+  the_actual_body.classList.remove(
+    "tab-rot-stage-1-body",
+    "tab-rot-stage-2-body",
+    "tab-rot-stage-3-body"
+  );
+
+  setTimeout(() => {
+    rot_overlay_div.classList.remove("tab-rot-shattering", "tab-rot-stage-2", "tab-rot-stage-3");
+    the_actual_body.classList.remove("tab-rot-restoring-body");
+
+    current_rot_stage = 0;
+    is_restoring = false;
+
+    rot_overlay_div.className = "";
+    
+    if (flash && flash.parentNode) {
+      flash.parentNode.removeChild(flash);
+    }
+    
+    console.log("restoration animation completed successfully.");
+  }, 800);
 }
