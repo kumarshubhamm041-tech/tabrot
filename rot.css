@@ -61,3 +61,27 @@ body.tab-rot-stage-3-body {
 .tab-rot-cracks {
   display: none !important;
 }
+.tab-rot-cracks {
+  display: none !important;
+}
+
+body.tab-rot-restoring-body {
+  filter: grayscale(0%) sepia(0%) !important;
+  transition: filter 0.9s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+#tab-rot-overlay.tab-rot-restoring {
+  opacity: 0 !important;
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+#tab-rot-overlay.tab-rot-restoring .tab-rot-cracks svg {
+  transform: scale(1.15) rotate(2deg);
+  opacity: 0;
+  transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+#tab-rot-overlay.tab-rot-restoring .tab-rot-grain {
+  opacity: 0 !important;
+  transition: opacity 0.4s ease-out !important;
+}
