@@ -1,46 +1,49 @@
 <!DOCTYPE html>
 <html lang=""en">
 <head>
-    <meta charset="UTF-8">
-    <title>Tab Rot - Settings</title>
+  <meta charset="UTF-8">
+  <title>Tab Rot - Settings</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f0c1b;
+      --panel-bg: rgba(22, 18, 38, 0.7);
+      --border: rgba(255, 255, 255, 0.08);
+      --accent: #ff5e62;
+      --accent-glow: rgba(255, 94, 98, 0.4);
+      --text: #eae6fd;
+      --text-muted: #8c82ab;
+      --success: #00f2fe;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      width: 320px;
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .deck-container {
+      background: linear-gradient(135deg, #16102b 0%, #0d0918 100%);
+      padding: 20px;
+      border: 1px solid var(--border);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+    }
+    .app-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+    }
+  </style>
+  <script src="popup.js" defer></script>
 </head>
 <body>
-    <div class="UTF-8">
-        <header class="app-header">
-            <h1 class="logo-text">TAB rot</h1>
-            <span class="version-tag">v1.0.0</span>
-        </header>
-
-        <main class="settings-body">
-       
-      <div class="setting-row">
-        <label for="global-toggle">Active Decaying</label>
-        <div class="toggle-switch">  
-        <input type="checkbox" id="global=toggle" checked />
-        <span class="toggle-slider"></span>
-        </div>
-        </div>
-
-
-         <div class="setting-row vertical">
-        <label for="threshold-select">Decay Threshold</label>
-        <select id="threshold-select" class="premium-select">
-          <option value="1">1 Minute (Testing Mode)</option>
-          <option value="60">1 Hour (Quick Rot)</option>
-          <option value="1440">1 Day (Standard)</option>
-          <option value="10080">1 Week (Hoarder Mode)</option>
-        </select>
-      </div>
-
-
-      <div class="actions-group">
-        <button id="test-rot-btn" class="btn primary">Decay Active Tab</button>
-        <button id="reset-all-btn" class="btn secondary">Restore All Tabs</button>
-      </div>
-    </main>
-
-    <footer class="app-footer">
-      <span class="status-msg" id="status-display">settings synchronized</span>
+  <div class="deck-container">
     </footer>
   </div>
 </body>
