@@ -1,4 +1,3 @@
-
 const DEFAULT_DECAY_THRESHOLD_MINUTES = 60;
 const DEFAULT_GLOBAL_ENABLED = true;
 
@@ -52,6 +51,38 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     updateTabTimestamp(tabId);
   }
 });
+
+
+function syncExistingTimestamps() {
+  chrome.tabs.query({}, (tabs) => {
+    tabs.forEach((tab) => {
+      if (tab.id && tab.url && !tab.url.startsWith("chrome://") && !tab.url.startsWith("edge://")) {
+        const tab_tab_id_str = tab.id.toString();
+        if (!tab_timestamps[tab_id_str]) {
+          tab_timestamps[tab_id_str] = Date.now();
+        }
+        }
+    });
+    saveTimestampsToStorage();
+    logeDebug("syncronized all open tabs to startup.");
+  });
+}
+
+
+function loadTimestampsFromStorage() {
+  chrome.storage.local.get(["tab_timestamps"], (result) => {
+    if (chrome.runtime.lastError) {
+      logDebug("error loading timestamps:", chrome.runtime.lastError);
+    } else if (result.tab_timestamps) {
+       if (result.tab_timestamps) {
+      tab_timestamps = result.tab_timestamps;
+      logDebug("restorted tab timestamps from storage:", tab_timestamps);
+    }
+
+    syncExistingTabs();
+  }
+});
+}
 tab_timestamps["system_init"] = Date.now();
 logDebug("initialization done.");
 
