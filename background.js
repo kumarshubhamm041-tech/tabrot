@@ -86,6 +86,19 @@ function updateTabTimestamp(tabId) {
   saveTimestampsToStorage();
 }
 
+function getDecayStage(deltaMs, thresholdMinutes) {
+  const thresholdMs = thresholdMinutes * 60 * 1000;
+
+  if (deltaMs >= thresholdMs) {
+    return 3;
+  } else if (deltaMs >= (thresholdMs * 2) / 3) {
+    return 2;
+  } else if (deltaMs >= thresholdMs / 3) {
+    return 1;
+  }
+  return 0;
+}
+
 function checkTabDecayLoop() {
   chrome.storage.local.get(["decay_threshold_minutes", "global_enabled"], (settings) => {
     const enabled = settings.global_enabled !== false;
@@ -108,15 +121,7 @@ function checkTabDecayLoop() {
         }
 
         const delta_ms = Date.now() - tab_timestamps[tab_id_str];
-        let stage = 0;
-
-        if (delta_ms >= threshold_ms) {
-          stage = 3;
-        } else if (delta_ms >= (threshold_ms * 2) / 3) {
-          stage = 2;
-        } else if (delta_ms >= threshold_ms / 3) {
-          stage = 1;
-        }
+        const stage = getDecayStage(delta_ms, threshold_min);
 
         chrome.tabs.sendMessage(tab.id, { action: "set_rot_stage", stage: stage }, (response) => {
           if (chrome.runtime.lastError) {
