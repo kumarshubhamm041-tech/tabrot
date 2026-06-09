@@ -37,6 +37,41 @@ document.addEventListener("DOMContentloaded", () => {
       console.log("storage sync successful finally");
  });
 });
+ 
+function saveSettings()  {
+    chrome.storage.local.set({
+        global_enabled: global_toggle.checked,
+        decay_threshold_minutes: parseInt(threshold_select.value, 10)
+    }, () => {
+        if (chrome.runtime.lastError) {
+            showStatus("error saving settings", true);
+        } else {
+            showStatus("settings saved!");
+
+            chrome.runtime.sendMessage({ action: "settings_updated"});
+        }
+    });
+
+        }
+        global_toggle.addEventListener("change", saveSettings);
+        threshold_select.addEventlistener("change", saveSettings);
+
+
+        test_rot_btn.addEventlistener("click", () => {
+            showStatus("decaying active tab...");
+            chrome.runtime.sendMessage({ action: "tesdt_decay"});
+     });
+
+
+        reset_all_btn.addEventListener("click", () => {
+            showStatus("restoring all tabs...");
+            chrome.runtime.sendMessage({ action: "reset_all" });
+        });
+       
+        
+        
+    
+    
 
 
       
