@@ -53,6 +53,28 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 });
 
 
+chrome.tabs.onRemoved.addListener((tabId) => {
+  const tab_id_str = tabId.toString();
+  if (tab_timestamps[tab_id_str]) {
+    delete tab_timestamps[tab_id_str];
+    logDebug(`cleaned up closed tab ${tabId} from memory`);
+    saveTimestampsToStorage();
+  }
+});
+
+
+function getDecayStage(deltaMs, thresholdMinutes) { 
+   const thresholdMs = thresholdMinutes * 60 * 1000;
+  if (deltaMs >= thresholdMs) {
+    return 3;
+  } else if (deltaMs >= (thresholdMs * 2) / 3) {
+    return 2;
+  } else if (deltaMs >= thresholdMs / 3) {
+    return 1;
+  }
+  return 0;
+}
+
 function syncExistingTimestamps() {
   chrome.tabs.query({}, (tabs) => {
     tabs.forEach((tab) => {
@@ -116,6 +138,7 @@ function updateTabTimestamp(tabId) {
   logDebug(`updated timestamp for tab ${tabId} to ${tab_timestamps[tabId.toString()]}`);
   saveTimestampsToStorage();
 }
+
 
 function getDecayStage(deltaMs, thresholdMinutes) {
   const thresholdMs = thresholdMinutes * 60 * 1000;
