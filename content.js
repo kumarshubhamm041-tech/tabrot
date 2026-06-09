@@ -81,10 +81,21 @@ const grain_div = document.createElement("div");
   console.log("storage sync successful finally");
 }
 
+function checkGlobalStatusAndLoad() {
+  chrome.storage.local.get(["global_enabled"], (settings) => {
+    const enabled = settings.global_enabled !== false;
+    if (enabled) {
+      injectRotOverlay();
+    } else {
+      console.log("Tab Rot is disabled globally. skipping visual injection lmaoo.");
+    }
+  });
+}
+
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", injectRotOverlay);
+  document.addEventListener("DOMContentLoaded", checkGlobalStatusAndLoad);
 } else {
-  injectRotOverlay();
+  checkGlobalStatusAndLoad();
 }
 
 
