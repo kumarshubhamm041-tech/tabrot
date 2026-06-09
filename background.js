@@ -102,7 +102,23 @@ function getDecayStage(deltaMs, thresholdMinutes) {
 function checkTabDecayLoop() {
   chrome.storage.local.get(["decay_threshold_minutes", "global_enabled"], (settings) => {
     const enabled = settings.global_enabled !== false;
-    if (!enabled) return;
+    if (!enabled) {
+
+      chrome.tabs.query({}, (tabs) => {
+        tabs.forEach((tab) => {
+          if (!tab.url ||  tab.url.startsWith("chrome://")) 
+  tab.url.startsWith("edge://") ;
+          chrome.tabs.sendMessage(tab.id, { action: "set_rot_stage", stage: 0 }, (response) => {
+            if (chrome.runtime.lastError) {
+
+            }
+          });
+        });
+      });
+      return;
+    }
+
+    const threshold_win = settings.decay_threshold_minuteas || DEFAULT_DECAY_THRESHOLD_MINUTES;
 
     const threshold_min = settings.decay_threshold_minutes || DEFAULT_DECAY_THRESHOLD_MINUTES;
     const threshold_ms = threshold_min * 60 * 1000;
