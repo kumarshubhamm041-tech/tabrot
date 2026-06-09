@@ -129,3 +129,45 @@ function checkTabDecayLoop() {
 }
 
 setInterval(checkTabDecayLoop, 5000);
+
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  logDebug("received message in background:", message);
+
+  if (message.action === "reset_my_timestamp") {
+    if (sender.tab && sender.tab.id) {
+      updateTabTimestamp(sender.tab.id);
+      sendResponse({ status: "ok" });
+    }
+  } else if (message.action === "settings_updated") {
+    
+    checkTabDecayLoop();
+    sendResponse({ status: "ok" });
+  } else if (message.action === "test_decay") {
+    
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs[0] && tabs[0].id) {
+        const tab_id_str = tabs[0].id.toString();
+       
+        tab_timestamps[tab_id_str] = Date.now() - (2 * 60 * 60 * 1000);
+        saveTimestampsToStorage();
+        
+        checkTabDecayLoop();
+      }
+    });
+    sendResponse({ status: "ok" });
+  } else if (message.action === "reset_all") {
+    
+    chrome.tabs.query({}, (tabs) => {
+      tabs.forEach((tab) => {
+        if (tab.id) {
+          tab_timestamps[tab.id.toString()] = Date.now();
+        }
+      });
+      saveTimestampsToStorage();
+      checkTabDecayLoop();
+    });
+    sendResponse({ status: "ok" });
+  }
+  return true; 
+});
