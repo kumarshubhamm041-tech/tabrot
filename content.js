@@ -62,7 +62,8 @@ const grain_div = document.createElement("div");
     const cracks_div = document.createElement("div");
   cracks_div.className = "tab-rot-layer tab-rot-cracks";
   cracks_div.innerHTML = `
-    <svg width="100%" height="100%" viewBox="0 0 1000 1000" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:100%; display:block;">
+    <svg width="100%" height="100%" viewBox="0 0 1000 1000" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"
+     style="width:100%; height:100%; display:block;">
       <g stroke="rgba(40,30,20,0.8)" stroke-width="1.5" fill="none">
         <path d="M500,500 L450,420 L350,390 L300,310 L150,290" />
         <path d="M500,500 L560,460 L680,430 L800,450 L950,420" />
@@ -217,4 +218,40 @@ function playRestorationAnimation() {
     
     console.log("restoration animation completed successfully.");
   }, 800);
+}
+
+
+function generateDynamicCracks() {
+  const center_x = 350 + Math.random() * 300;
+  const center_y = 350 + Math.random() * 300;
+  const num_cracks = 6 + Math.floor(Math.random() * 5);
+
+  let paths = "";
+  
+  for (let i = 0; i < num_cracks; i++) {
+    const angle = (i * 2 * Math.PI) / num_cracks + (Math.random() * 0.4 - 0.2);
+    let curr_x = center_x;
+    let curr_y = center_y;
+    let path_data = `M ${curr_x.toFixed(0)} ${curr_y.toFixed(0)}`;
+    
+    const segments = 3 + Math.floor(Math.random() * 2);
+    let length = 120 + Math.random() * 160;
+    
+    for (let j = 0; j < segments; j++) {
+      curr_x += Math.cos(angle) * length + (Math.random() * 60 - 30);
+      curr_y += Math.sin(angle) * length + (Math.random() * 60 - 30);
+      path_data += ` L ${curr_x.toFixed(0)} ${curr_y.toFixed(0)}`;
+      length *= 0.75;
+    }
+    
+    paths += `<path d="${path_data}" />\n`;
+  }
+  
+  return `
+    <svg width="100%" height="100%" viewBox="0 0 1000 1000" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:100%; display:block;">
+      <g stroke="rgba(55,42,32,0.8)" stroke-width="1.8" fill="none">
+        ${paths}
+      </g>
+    </svg>
+  `;
 }
