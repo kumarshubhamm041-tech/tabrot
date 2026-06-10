@@ -247,11 +247,16 @@ function generateDynamicCracks() {
     paths += `<path d="${path_data}" />\n`;
   }
   
-  return `
+  const cracked_svg_string = `
+
     <svg width="100%" height="100%" viewBox="0 0 1000 1000" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:100%; display:block;">
-      <g stroke="rgba(55,42,32,0.8)" stroke-width="1.8" fill="none">
-        ${paths}
+      preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"
+      style="width:100%; height:100%; display:block;">
+      <g stroke="rgba(55,42,30,0.8)" stroke-width="1.5" fill="none">
+      ${paths}
       </g>
-    </svg>
-  `;
-}
+      </svg>
+      `;
+
+      console.log("ROT STAGE 3 TRIGGERED, generated cracked layout of size:", cracked_svg_string.length);
+        return cracked_svg_string;}
