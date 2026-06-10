@@ -10,7 +10,12 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   console.log("content.js received message:", message);
 
   if (message.action === "set_rot_stage") {
+    if (is_restoring) {
+      sendResponse({ status: "ignored", reason: "restoring" });
+      return;
+    
     const previous_stage = current_rot_stage;
+    }
     current_rot_stage = message.stage;
     
     console.log(`updating rot state from ${previous_stage} to ${current_rot_stage}`);
