@@ -1,13 +1,19 @@
 {
   "manifest_version": 3,
   "name": "Tab Rot",
-  "version": "1.0.0",
-  "description": "visual decay for tabs left open too long because memory leaks arent enough. sepia, grain, cracks, and emotional breakdown included.",
+  "version": "1.1.0",
+  "description": "Tabs you keep ignoring start to look like it. Unvisited tabs slowly decay - faded, grainy, cracked - until you click them back to life.",
   "author": "xapqrt",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
   "permissions": [
     "storage",
     "tabs",
-    "scripting"
+    "alarms"
   ],
   "host_permissions": [
     "http://*/*",
