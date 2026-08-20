@@ -43,12 +43,11 @@ function getDecayStage(deltaMs, thresholdMs) {
 }
 
 async function loadPersistedState() {
-  const local = await chrome.storage.local.get(["tab_timestamps", "url_timestamps"]);
-  const sess = await chrome.storage.session.get("tab_urls");
+  const local = await chrome.storage.local.get(["tab_timestamps", "url_timestamps", "tab_urls"]);
   tab_timestamps = local.tab_timestamps || {};
   url_timestamps = local.url_timestamps || {};
-  tab_urls = sess.tab_urls || {};
-  logDebug("loaded persisted state", { tabs: Object.keys(tab_timestamps).length, urls: Object.keys(url_timestamps).length });
+  tab_urls = local.tab_urls || {};
+  logDebug("loaded persisted state", { tabs: Object.keys(tab_timestamps).length, urls: Object.keys(url_timestamps).length, tabUrls: Object.keys(tab_urls).length });
 }
 
 function saveTabTimestamps() {
@@ -60,7 +59,7 @@ function saveUrlTimestamps() {
 }
 
 function saveTabUrls() {
-  chrome.storage.session.set({ tab_urls }, () => {});
+  chrome.storage.local.set({ tab_urls }, () => {});
 }
 
 function addUrlTime(url, time) {
@@ -74,7 +73,14 @@ function addUrlTime(url, time) {
 function popOldestUrlTime(url) {
   const list = url_timestamps[url];
   if (!Array.isArray(list) || list.length === 0) return null;
-  return Math.min(...list);
+  // find the oldest (minimum) timestamp and remove it from the array
+  let minIndex = 0;
+  for (let i = 1; i < list.length; i++) {
+    if (list[i] < list[minIndex]) minIndex = i;
+  }
+  const val = list.splice(minIndex, 1)[0];
+  if (list.length === 0) delete url_timestamps[url];
+  return val;
 }
 
 function replaceUrlTime(url, oldTime, newTime) {

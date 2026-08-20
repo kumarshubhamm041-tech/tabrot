@@ -1,3 +1,9 @@
+// avoid running inside iframes
+if (window.top !== window) {
+  console.log("[TabRotContent] running in iframe — aborting overlay injection");
+  return;
+}
+
 let current_rot_stage = 0;
 let previous_rot_stage = 0;
 let is_restoring = false;
@@ -60,9 +66,11 @@ function generateCracks(overlay) {
   const cracks_layer = overlay.querySelector(".tab-rot-cracks");
   if (!cracks_layer) return;
 
-  const center_x = 350 + Math.random() * 300;
-  const center_y = 350 + Math.random() * 300;
-  const num_cracks = 8 + Math.floor(Math.random() * 5);
+  const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+  const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+  const center_x = Math.floor(vw * (0.2 + Math.random() * 0.6));
+  const center_y = Math.floor(vh * (0.2 + Math.random() * 0.6));
+  const num_cracks = 6 + Math.floor(Math.random() * 6);
 
   let paths = "";
   for (let i = 0; i < num_cracks; i++) {
