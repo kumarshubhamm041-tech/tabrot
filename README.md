@@ -1,14 +1,9 @@
 # Tab Rot
 
-Tabs you ignore visually decay like old paper left in the sun — faded, grainy, cracked. Clicking a decayed tab triggers a restoration animation back to normal.
-
+Tabs you ignore visually decay and there are three stage of decay the ignored the tab is the more decay it gets
 ## Features
 
-- **3 Decay Stages**: Unvisited tabs gradually fade (sepia wash), turn grainy (parchment noise), and crack (spiderweb fissures).
-- **Click to Restore**: Clicking anywhere on a decayed tab triggers a shatter and ripple restoration animation.
-- **Persistent State**: Tab decay persists across browser restarts via local storage.
-- **Configurable Threshold**: Choose when decay begins (1 hour, 6 hours, 1 day, 1 week) from the popup menu.
-- **Zero Disruption**: Overlays use `pointer-events: none` and scripts load at `document_idle`.
+Tabs go through stages of decay.first they fade, then they start getting grainy and they start getiing crack like old paper. Click one and it come back to life with a lil shatter animation.The extension remembers how long each tab has been sitting there,even after you restart your browser.You can also pick decay start anywhere from hour to a week and it will never get in your way.
 
 ### Install (firefox)
 1. Install from [Firefox Add on](https://addons.mozilla.org/en-US/firefox/addon/tab-rot123/)
