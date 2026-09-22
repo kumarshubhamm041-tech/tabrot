@@ -10,9 +10,7 @@ Tabs you ignore visually decay like old paper left in the sun — faded, grainy,
 - **Configurable Threshold**: Choose when decay begins (1 hour, 6 hours, 1 day, 1 week) from the popup menu.
 - **Zero Disruption**: Overlays use `pointer-events: none` and scripts load at `document_idle`.
 
-## Install
-
-1. Clone or download this repo.
-2. Go to `chrome://extensions` in your browser.
-3. Enable **Developer mode** (top right).
-4. Click **Load unpacked** and select the extension folder.
+### Install (firefox)
+1. Install from [Firefox Add on](https://addons.mozilla.org/en-US/firefox/addon/tab-rot123/)
+2. Click **Add to Firefox**
+3. Open the extension popup to set your decay threshold
